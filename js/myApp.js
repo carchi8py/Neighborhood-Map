@@ -4,6 +4,7 @@ var Location = function(title, latitude, longitude) {
 	var self = this;
 
 	self.title = ko.observable(title);
+	self.content = '<h2 class="info-title">' + title + '</h2>'
 	self.latitude = ko.observable(latitude);
 	self.longitude = ko.observable(longitude);
 
@@ -15,7 +16,6 @@ var Location = function(title, latitude, longitude) {
 	self.infoWindow = function() {
 		infowindow.setContent(self.content);
 		infowindow.open(map, self.marker);
-		$('#placeslist-switcher').attr('checked', false);
 	}
 
 	google.maps.event.addListener(self.marker, 'click', self.infoWindow);
