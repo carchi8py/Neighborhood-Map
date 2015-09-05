@@ -28,7 +28,11 @@ var ViewModel = function() {
 
 	self.locations = ko.observableArray(
 		[
-			new Location('Gordon Ramsay Burgr', 36.1108308, -115.1722186)
+			new Location('Gordon Ramsay Burgr', 36.1108308, -115.1722186),
+			new Location('Gordon Ramsay Pub and Grill', 36.1174613, -115.175927),
+			new Location('Picasso', 36.1133574, -115.1750467),
+			new Location('Holsteins', 36.1098873, -115.1745552),
+			new Location('Nine Fine Irishmen', 36.1021012,-115.1737873)
 		]
 	);
 
