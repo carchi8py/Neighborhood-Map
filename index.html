@@ -4,10 +4,11 @@
 	<title>Las Vegas Map</title>
 	<link rel="stylesheet" href="css/map.css">
 	<link rel="stylesheet" href="css/lib/foundation.min.css">
+	<link rel="stylesheet" href="css/lib/placelist.css">
 	<link rel="stylesheet" href="css/mycss.css">
 </head>
 <body>
-	<form id="topbar" class="fixed">
+	<nav id="topbar" class="fixed">
 		<div id="search-container" class="row collapse postfix">
 			<div class="large-5 small-9 columns">
 				<input type="text" placeholder="Search">
@@ -16,7 +17,22 @@
 				<a href="#" class="button postfix">Search</a>
 			</div>
 		</div>
-	</form>
+	</nav>
+	<div class="hidden placeslist fixed">
+		<input type="checkbox" id="placeslist-switcher"/>
+		<label id="place" class="placebar-button" for="placeslist-switcher">
+			<span><i class="icon-cancel"></i></span>
+			<span><i class="icon-location"></i></span>
+		</label>
+		<div>
+			<div>
+				<h1 class="location-title"><i class="icon-location"></i> Locations</h1>
+				<ul data-bind="foreach: locations">
+					<li><a data-bind="text: title, click: $parent.openInfoWindow" href="#"></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
 	<div id="map">
 	</div>
 	<script async defer
