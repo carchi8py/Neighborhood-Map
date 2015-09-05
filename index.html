@@ -17,11 +17,31 @@
 			</div>
 		</div>
 	</form>
-	<div id="map"></div>
-
-	<script src="js/map.js"></script>
+		<div class="placeslist fixed">
+			<input type="checkbox" id="placeslist-switcher"/>
+			<label id="place" class="placebar-button" for="placeslist-switcher">
+				<span><i class="icon-cancel"></i></span>
+				<span><i class="icon-location"></i></span>
+			</label>
+			<div>
+				<div>
+					<ul data-bind="foreach: locations">
+						<li><a data-bind="text: title, click: $parent.openInfoWindow" href="#"></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	<div id="map">
+				<div  class="google_map">
+					<img width="640" height="640" src="" alt="Map showing ITSON and Laguna del Nainari">
+				</div>
+	</div>
 	<script async defer
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0upBSIJ83gXpeSbMPtkfnn355wiRgvjQ&callback=initMap">
 	</script>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript" src="js/lib/knockout-3.3.0.js"></script>
+	<script type="text/javascript" src="js/myApp.js"></script>
 </body>
 </html>
