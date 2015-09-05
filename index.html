@@ -10,18 +10,19 @@
 
 </head>
 <body>
-  
+  <form id="topbar">
+    <input type="text" placeholder="Search">
+    <a href="#">Search</a>
+  </form>
   <div id="map"></div>
     <script type="text/javascript">
-
-var map;
-function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 36.115, lng: -115.172},
-    zoom: 16
-  });
-}
-
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 36.115, lng: -115.172},
+          zoom: 16
+        });
+      }
     </script>
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0upBSIJ83gXpeSbMPtkfnn355wiRgvjQ&callback=initMap">
