@@ -30,7 +30,6 @@ var ViewModel = function() {
 		[
 			new Location('Gordon Ramsay Burgr', 36.1108308, -115.1722186, 'img/lib/restaurant.png', 'Casual'),
 			new Location('Gordon Ramsay Pub and Grill', 36.1174613, -115.175927, 'img/lib/restaurant.png', 'Casual'),
-			new Location('Picasso', 36.1133574, -115.1750467, 'img/lib/restaurant.png', 'Casual'),
 			new Location('Holsteins', 36.1098873, -115.1745552, 'img/lib/restaurant.png', 'Casual'),
 			new Location('Nine Fine Irishmen', 36.1021012, -115.1737873, 'img/lib/bar.png', 'Casual'),
 			//Shows
@@ -40,7 +39,9 @@ var ViewModel = function() {
 			new Location('Cirque du Soleil: Beatles Love', 36.1202598, -115.1748707, 'img/lib/music_live.png', 'Shows'),
 			new Location('Cirque du Soleil: Mystere', 36.1244956, -115.1725308, 'img/lib/theater.png', 'Shows'),
 			new Location('Cirque du Soleil: Ka', 36.10324, -115.1702839, 'img/lib/theater.png', 'Shows'),
-			new Location('Cirque du Soleil: Criss Angel Believe', 36.0946657, -115.1774926, 'img/lib/music_live.png', 'Shows')
+			new Location('Cirque du Soleil: Criss Angel Believe', 36.0946657, -115.1774926, 'img/lib/music_live.png', 'Shows'),
+			//Fine Dinning
+			new Location('Picasso', 36.1133574, -115.1750467, 'img/lib/restaurant.png', 'Dinning'),
 		];
 
 	self.locations = ko.observableArray(myLocations.slice());
@@ -50,7 +51,7 @@ var ViewModel = function() {
 	};
 
 	self.showLocationByType = function(type) {
-		self.search(type);
+		self.searchType(type);
 	}
 
 	self.showAllLocations = function() {
@@ -65,7 +66,11 @@ var ViewModel = function() {
 		self.showLocationByType('Shows');
 	};
 
-	self.search = function(value) {
+	self.showDinningLocations = function() {
+		self.showLocationByType('Dinning');
+	};
+
+	self.searchType = function(value) {
 		//First hide everything
 		self.hideAllMarkers();
 		self.locations.removeAll();
@@ -82,6 +87,29 @@ var ViewModel = function() {
 		}
 		self.locations(locs)
 	};
+
+	self.search = function(value) {
+		self.hideAllMarkers();
+		self.locations.removeAll();
+		var locs = [];
+		for(var x in parent.myLocations){
+			var curentLoc = parent.myLocations[x];
+			if(valueMatches(value, curentLoc.title())) {
+				self.showMarker(curentLoc);
+				loc.push(curentLoc);
+			}
+		}
+		self.locations(locs);
+	};
+
+	self.searched = function() {
+		if(self.locations().length) {
+			console.log(self.locations().length)
+			self.openInfoWindow(self.locations()[0]);
+			self.searchType('All');
+		}
+		console.log('bye')
+	}
 
 	self.hideAllMarkers = function() {
 		var markers = self.locations();
@@ -103,4 +131,13 @@ function initMap() {
 	});
 	infowindow = new google.maps.InfoWindow();
 	ko.applyBindings(new ViewModel());
-}
+};
+
+regExpEscape = function (s) {
+	return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
+};
+
+valueMatches = function (inputItem, testItem) {
+	var CASE_INSENSITIVE_MATCHING = 'i';
+	return RegExp(regExpEscape(inputItem.trim()), CASE_INSENSITIVE_MATCHING).test(testItem);
+};
