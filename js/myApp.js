@@ -26,6 +26,8 @@ var Location = function(title, latitude, longitude, icon, type) {
 var ViewModel = function() {
 	//To remeber the parent context
 	var self = this;
+	self.query = ko.observable('');
+
 	myLocations = 		
 		[
 			new Location('Gordon Ramsay Burgr', 36.1108308, -115.1722186, 'img/lib/restaurant.png', 'Casual'),
@@ -89,6 +91,7 @@ var ViewModel = function() {
 	};
 
 	self.search = function(value) {
+		console.log('W00t')
 		self.hideAllMarkers();
 		self.locations.removeAll();
 		var locs = [];
@@ -96,7 +99,7 @@ var ViewModel = function() {
 			var curentLoc = parent.myLocations[x];
 			if(valueMatches(value, curentLoc.title())) {
 				self.showMarker(curentLoc);
-				loc.push(curentLoc);
+				locs.push(curentLoc);
 			}
 		}
 		self.locations(locs);
@@ -130,7 +133,9 @@ function initMap() {
 		zoom: 16
 	});
 	infowindow = new google.maps.InfoWindow();
-	ko.applyBindings(new ViewModel());
+	viewModel = new ViewModel();
+	ko.applyBindings(viewModel);
+	viewModel.query.subscribe(viewModel.search);
 };
 
 regExpEscape = function (s) {
