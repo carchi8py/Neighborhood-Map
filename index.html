@@ -9,14 +9,28 @@
 </head>
 <body>
 	<nav id="topbar" class="fixed">
-		<div id="search-container" class="row collapse postfix">
-			<div class="large-5 small-9 columns">
+		<!-- Search Bar -->
+		<div id="search-container" class="row full-width collapse postfix small-centered">
+			<div class="columns small-9 medium-4">
 				<input type="text" placeholder="Search">
 			</div>
 			<div class="large-2 end small-3 columns">
 				<a href="#" class="button postfix">Search</a>
 			</div>
+			<dl id="filter-menu" class="columns sub-nav medium-5" role="menu" title="Filter Menu List">
+				<dt>Show:</dt>
+				<dd role="menuitem">
+					<a data-bind="click:showAllLocations" href="#">All</a>
+				</dd>
+				<dd role="menuitem">
+					<a data-bind="click:showCasualLocations" href="#"><span>Casual Restraunt</span></a>
+				</dd>
+				<dd role="menuitem">
+					<a data-bind="click:showShowsLocations" href="#"><span>Shows</span></a>
+				</dd>
+			</dl>
 		</div>
+		<!-- Filter Bar -->
 	</nav>
 	<div class="hidden placeslist fixed">
 		<input type="checkbox" id="placeslist-switcher"/>

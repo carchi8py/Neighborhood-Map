@@ -1,5 +1,4 @@
-console.log('hii');
-var Location = function(title, latitude, longitude, icon) {
+var Location = function(title, latitude, longitude, icon, type) {
 	//To remeber the parent context
 	var self = this;
 
@@ -8,6 +7,7 @@ var Location = function(title, latitude, longitude, icon) {
 	self.latitude = ko.observable(latitude);
 	self.longitude = ko.observable(longitude);
 	self.icon = ko.observable(icon)
+	self.type = ko.observable(type)
 
 	self.marker = new google.maps.Marker({
 		position: new google.maps.LatLng(self.latitude(), self.longitude()),
@@ -21,34 +21,63 @@ var Location = function(title, latitude, longitude, icon) {
 	}
 
 	google.maps.event.addListener(self.marker, 'click', self.infoWindow);
-
 };
 
 var ViewModel = function() {
 	//To remeber the parent context
 	var self = this;
-
-	self.locations = ko.observableArray(
+	myLocations = 		
 		[
-			new Location('Gordon Ramsay Burgr', 36.1108308, -115.1722186, 'img/lib/restaurant.png'),
-			new Location('Gordon Ramsay Pub and Grill', 36.1174613, -115.175927, 'img/lib/restaurant.png'),
-			new Location('Picasso', 36.1133574, -115.1750467, 'img/lib/restaurant.png'),
-			new Location('Holsteins', 36.1098873, -115.1745552, 'img/lib/restaurant.png'),
-			new Location('Nine Fine Irishmen', 36.1021012, -115.1737873, 'img/lib/bar.png'),
+			new Location('Gordon Ramsay Burgr', 36.1108308, -115.1722186, 'img/lib/restaurant.png', 'Casual'),
+			new Location('Gordon Ramsay Pub and Grill', 36.1174613, -115.175927, 'img/lib/restaurant.png', 'Casual'),
+			new Location('Picasso', 36.1133574, -115.1750467, 'img/lib/restaurant.png', 'Casual'),
+			new Location('Holsteins', 36.1098873, -115.1745552, 'img/lib/restaurant.png', 'Casual'),
+			new Location('Nine Fine Irishmen', 36.1021012, -115.1737873, 'img/lib/bar.png', 'Casual'),
 			//Shows
-			new Location('Cirque du Soleil: Zarkana', 36.1060481, -115.1773626, 'img/lib/theater.png'),
-			new Location('Cirque du Soleil: Zumanity', 36.102895, -115.1748606, 'img/lib/stripclub2.png'),
-			new Location('Cirque du Soleil: O', 36.113911, -115.1773742, 'img/lib/theater.png'),
-			new Location('Cirque du Soleil: Beatles Love', 36.1202598, -115.1748707, 'img/lib/music_live.png'),
-			new Location('Cirque du Soleil: Mystere', 36.1244956, -115.1725308, 'img/lib/theater.png'),
-			new Location('Cirque du Soleil: Ka', 36.10324, -115.1702839, 'img/lib/theater.png'),
-			new Location('Cirque du Soleil: Criss Angel Believe', 36.0946657, -115.1774926, 'img/lib/music_live.png')
-		]
-	);
+			new Location('Cirque du Soleil: Zarkana', 36.1060481, -115.1773626, 'img/lib/theater.png', 'Shows'),
+			new Location('Cirque du Soleil: Zumanity', 36.102895, -115.1748606, 'img/lib/stripclub2.png', 'Shows'),
+			new Location('Cirque du Soleil: O', 36.113911, -115.1773742, 'img/lib/theater.png', 'Shows'),
+			new Location('Cirque du Soleil: Beatles Love', 36.1202598, -115.1748707, 'img/lib/music_live.png', 'Shows'),
+			new Location('Cirque du Soleil: Mystere', 36.1244956, -115.1725308, 'img/lib/theater.png', 'Shows'),
+			new Location('Cirque du Soleil: Ka', 36.10324, -115.1702839, 'img/lib/theater.png', 'Shows'),
+			new Location('Cirque du Soleil: Criss Angel Believe', 36.0946657, -115.1774926, 'img/lib/music_live.png', 'Shows')
+		];
+
+	self.locations = ko.observableArray(myLocations.slice());
 
 	self.openInfoWindow = function(obj) {
 		obj.infoWindow();
 	};
+
+	self.showLocationByType = function(type) {
+		self.search(type);
+	}
+
+	self.showAllLocations = function() {
+		self.showLocationByType('All');
+	};
+
+	self.showCasualLocations = function() {
+		self.showLocationByType('Casual');
+	};
+
+	self.showShowsLocations = function() {
+		self.showLocationByType('Shows');
+	};
+
+	self.search = function(value) {
+		//First hide everything
+		self.hideAllMarkers();
+		self.locations.removeAll();
+		var locs = [];
+	};
+
+	self.hideAllMarkers = function() {
+		var markers = self.locations();
+		for(var x in self.locations()) {
+			markers[x].marker.setMap(null);
+		}
+	}
 };
 
 var map, infowindow;
