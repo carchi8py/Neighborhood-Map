@@ -170,7 +170,7 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        padding: 0 1.5em;
-        font-size: 1em;
+        padding: 0 1.0em;
+        font-size: 0.9em;
     }
 }
