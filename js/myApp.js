@@ -70,6 +70,17 @@ var ViewModel = function() {
 		self.hideAllMarkers();
 		self.locations.removeAll();
 		var locs = [];
+		for(var x in parent.myLocations){
+			var curentLoc = parent.myLocations[x];
+			if(value == 'All') {
+				locs.push(curentLoc);
+				self.showMarker(curentLoc);
+			} else if(value == curentLoc.type()) {
+				locs.push(curentLoc);
+				self.showMarker(curentLoc);
+			}
+		}
+		self.locations(locs)
 	};
 
 	self.hideAllMarkers = function() {
@@ -77,6 +88,10 @@ var ViewModel = function() {
 		for(var x in self.locations()) {
 			markers[x].marker.setMap(null);
 		}
+	}
+
+	self.showMarker = function(location) {
+		location.marker.setMap(map);
 	}
 };
 
