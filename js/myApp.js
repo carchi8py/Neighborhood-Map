@@ -38,7 +38,9 @@ var Location = function(title, latitude, longitude, icon, type, foursquare) {
 		infowindow.open(map, self.marker);
 	}
 
-	google.maps.event.addListener(self.marker, 'click', self.infoWindow);
+	google.maps.event.addListener(self.marker, 'click', function() {
+		parent.viewModel.openInfoWindow(self);
+	});
 };
 
 FSclientId = ko.observable('QLHZUN0VNMCUV0OMSJPTE0EBH3BQVMYLR41OUGQONTMWRLSJ');
@@ -183,6 +185,7 @@ var ViewModel = function() {
 	self.getFoursquareVenue = function(location)
 	{
 		baseURL = 'https://api.foursquare.com/v2/venues/'
+		console.log(location)
 		foursquareApiQuery = baseURL + location.foursquare() + '/?client_id=' + FSclientId() + '&client_secret=' + FSsecret() + '&v=20150906';
 		console.log(foursquareApiQuery)
 		var test = $.getJSON(foursquareApiQuery, function(data) {
@@ -192,7 +195,7 @@ var ViewModel = function() {
 			location.fqOpenNow(data.response.venue.popular.status);
 			location.fqOpenWhen(data.response.venue.popular.timeframes);
 		});
-	}
+	};
 };
 
 var map, infowindow;
