@@ -1,9 +1,19 @@
+
+//I couldn't figure out how to get the callback on getJSON to work so that i could set
+//The FQ variables in locations. The only way i was able to was to disable async
+$.ajaxSetup({'async': false});
+
 var Location = function(title, latitude, longitude, icon, type, foursquare) {
 	//To remeber the parent context
 	var self = this;
 
 	self.title = ko.observable(title);
-	self.content = '<h2 class="info-title">' + title + '</h2>'
+	self.fqRating = ko.observable()
+	self.fqHereNow = ko.observable()
+	self.fqBestPhoto = ko.observable()
+	self.fqOpenNow = ko.observable()
+	self.fqOpenWhen = ko.observable()
+	self.content = '<h2 class="info-title">' + title + self.fqRating() + '</h2>'
 	self.latitude = ko.observable(latitude);
 	self.longitude = ko.observable(longitude);
 	self.icon = ko.observable(icon)
@@ -17,7 +27,12 @@ var Location = function(title, latitude, longitude, icon, type, foursquare) {
 	});
 
 	self.infoWindow = function() {
-
+		console.log('print other stuff')
+		console.log(self.fqRating())
+		self.content1 = '<h3 class="info-title">' + title + '</h3>';
+		self.content2 = '<b>Rating:</b>' + self.fqRating() + '<br>';
+		self.content3 = '<b>People here now:</b> ' + self.fqHereNow();
+		self.content = self.content1 + self.content2 + self.content3 
 		infowindow.setContent(self.content);
 		infowindow.open(map, self.marker);
 	}
@@ -79,7 +94,7 @@ var ViewModel = function() {
 	self.locations = ko.observableArray(myLocations.slice());
 
 	self.openInfoWindow = function(obj) {
-		self.getFoursquareVenue(obj.foursquare);
+		var location2 = self.getFoursquareVenue(obj);
 		obj.infoWindow();
 	};
 
@@ -164,14 +179,17 @@ var ViewModel = function() {
 		location.marker.setMap(map);
 	}
 
-	self.getFoursquareVenue = function(fourSqaureID)
+	self.getFoursquareVenue = function(location)
 	{
 		baseURL = 'https://api.foursquare.com/v2/venues/'
-		foursquareApiQuery = baseURL + fourSqaureID() + '/?client_id=' + FSclientId() + '&client_secret=' + FSsecret() + '&v=20150906';
-		console.log(foursquareApiQuery);
-		console.log('------')
-		$.getJSON(foursquareApiQuery, function(data) {
-			console.log(data.response);
+		foursquareApiQuery = baseURL + location.foursquare() + '/?client_id=' + FSclientId() + '&client_secret=' + FSsecret() + '&v=20150906';
+		console.log(foursquareApiQuery)
+		var test = $.getJSON(foursquareApiQuery, function(data) {
+			location.fqRating(data.response.venue.rating);
+			location.fqHereNow(data.response.venue.hereNow.count);
+			location.fqBestPhoto(data.response.venue.bestPhoto);
+			location.fqOpenNow(data.response.venue.popular.status);
+			location.fqOpenWhen(data.response.venue.popular.timeframes);
 		});
 	}
 };
