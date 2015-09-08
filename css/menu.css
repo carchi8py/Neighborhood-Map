@@ -61,7 +61,7 @@
 		float: right;
 		display: block;
 		width: auto;
-		max-width: 80%;
+		max-width: 90%;
 		height: auto;
 		background: none;
 		box-shadow: none;
@@ -73,6 +73,7 @@
 	#filter-menu dd{
 		font-size: 0.875rem;
 		margin-left: 0;
+		-webkit-margin-start: -10px;
 	}
 
 	#filter-menu i {
