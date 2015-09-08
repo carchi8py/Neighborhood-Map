@@ -12,7 +12,7 @@ var Location = function(title, latitude, longitude, icon, type, foursquare) {
 	self.fqHereNow = ko.observable()
 	self.fqBestPhoto = ko.observable()
 	self.fqOpenNow = ko.observable()
-	self.fqOpenWhen = ko.observable()
+	self.fqOpenWhen = []
 	self.fqPhoto2 = ko.observable()
 	self.fqPhoto3 = ko.observable()
 	self.fqPhoto4 = ko.observable()
@@ -36,12 +36,26 @@ var Location = function(title, latitude, longitude, icon, type, foursquare) {
 		self.content1 = '<center><h3 class="info-title">' + title + '</h3></center>';
 		self.content2 = '<b>Rating: </b>' + self.fqRating() + '<br>';
 		self.content3 = '<b>People here now: </b> ' + self.fqHereNow() + '<br><br>';
+		self.timeinfo = ''
+		if (self.fqOpenWhen.length > 0)
+		{
+			self.fqOpenWhen.forEach(function(item){
+				console.log(item)
+				self.timeinfo = self.timeinfo + '<b>' + item.days + ': </b>'
+				item.open.forEach(function(openItem) {
+					self.timeinfo = self.timeinfo + openItem.renderedTime + ' '
+				})
+				self.timeinfo = self.timeinfo + '<br>'
+			})
+		} else {
+			self.timeinfo = "No Fourquare Opening time information<br>"
+		}
 		self.content4 = '<a href="https://foursquare.com/v/' + self.foursquare() + '"><img src="' + self.fqBestPhoto().prefix + '100x100' + self.fqBestPhoto().suffix + '">'
 		self.content5 = '<img src="' + self.fqPhoto2().prefix + '100x100' + self.fqPhoto2().suffix + '">'
 		self.content6 = '<img src="' + self.fqPhoto3().prefix + '100x100' + self.fqPhoto3().suffix + '">'
 		self.content7 = '<img src="' + self.fqPhoto4().prefix + '100x100' + self.fqPhoto4().suffix + '">'
 		self.content8 = '<img src="' + self.fqPhoto5().prefix + '100x100' + self.fqPhoto5().suffix + '"></a><br>'
-		self.content = self.content1 + self.content2 + self.content3 + self.content4 + self.content5 + self.content6 + self.content7 + self.content8
+		self.content = self.content1 + self.content2 + self.timeinfo + self.content3 + self.content4 + self.content5 + self.content6 + self.content7 + self.content8
 		var latLng = self.marker.getPosition();
 		infowindow.setContent(self.content);
 		infowindow.open(map, self.marker);
@@ -215,10 +229,10 @@ var ViewModel = function() {
 			}
 			//Some locations do not have a time table, so we'll put an empty string
 			try {
-				location.fqOpenWhen(data.response.venue.popular.timeframes);
+				location.fqOpenWhen = data.response.venue.popular.timeframes;
 			}
 			catch(err) {
-				location.fqOpenWhen('')
+				location.fqOpenWhen = []
 			}
 		});
 	};
