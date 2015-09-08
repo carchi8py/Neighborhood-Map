@@ -13,6 +13,10 @@ var Location = function(title, latitude, longitude, icon, type, foursquare) {
 	self.fqBestPhoto = ko.observable()
 	self.fqOpenNow = ko.observable()
 	self.fqOpenWhen = ko.observable()
+	self.fqPhoto2 = ko.observable()
+	self.fqPhoto3 = ko.observable()
+	self.fqPhoto4 = ko.observable()
+	self.fqPhoto5 = ko.observable()
 	self.content = '<h2 class="info-title">' + title + self.fqRating() + '</h2>'
 	self.latitude = ko.observable(latitude);
 	self.longitude = ko.observable(longitude);
@@ -32,8 +36,12 @@ var Location = function(title, latitude, longitude, icon, type, foursquare) {
 		self.content1 = '<h3 class="info-title">' + title + '</h3>';
 		self.content2 = '<b>Rating:</b>' + self.fqRating() + '<br>';
 		self.content3 = '<b>People here now:</b> ' + self.fqHereNow() + '<br>';
-		self.content4 = '<img src="' + self.fqBestPhoto().prefix + '240x240' + self.fqBestPhoto().suffix + '">'
-		self.content = self.content1 + self.content2 + self.content3 + self.content4
+		self.content4 = '<img src="' + self.fqPhoto2().prefix + '100x100' + self.fqPhoto2().suffix + '">'
+		self.content5 = '<img src="' + self.fqPhoto3().prefix + '100x100' + self.fqPhoto3().suffix + '">'
+		self.content6 = '<img src="' + self.fqPhoto4().prefix + '100x100' + self.fqPhoto4().suffix + '">'
+		self.content7 = '<img src="' + self.fqPhoto5().prefix + '100x100' + self.fqPhoto5().suffix + '"><br>'
+		self.content8 = '<img src="' + self.fqBestPhoto().prefix + '400x400' + self.fqBestPhoto().suffix + '"><br>'
+		self.content = self.content1 + self.content2 + self.content3 + self.content4 + self.content5 + self.content6 + self.content7 + self.content8
 		infowindow.setContent(self.content);
 		infowindow.open(map, self.marker);
 	}
@@ -192,6 +200,10 @@ var ViewModel = function() {
 			location.fqRating(data.response.venue.rating);
 			location.fqHereNow(data.response.venue.hereNow.count);
 			location.fqBestPhoto(data.response.venue.bestPhoto);
+			location.fqPhoto2(data.response.venue.photos.groups[0].items[1])
+			location.fqPhoto3(data.response.venue.photos.groups[0].items[2])
+			location.fqPhoto4(data.response.venue.photos.groups[0].items[3])
+			location.fqPhoto5(data.response.venue.photos.groups[0].items[4])
 			//Some locations do not have a Status, so we'll put an empty string
 			try {
 				location.fqOpenNow(data.response.venue.popular.status);
