@@ -33,19 +33,19 @@ var Location = function(title, latitude, longitude, icon, type, foursquare) {
 	self.infoWindow = function() {
 		console.log('print other stuff')
 		console.log(self.fqRating())
-		self.content1 = '<h3 class="info-title">' + title + '</h3>';
-		self.content2 = '<b>Rating:</b>' + self.fqRating() + '<br>';
-		self.content3 = '<b>People here now:</b> ' + self.fqHereNow() + '<br>';
-		self.content4 = '<img src="' + self.fqPhoto2().prefix + '100x100' + self.fqPhoto2().suffix + '">'
-		self.content5 = '<img src="' + self.fqPhoto3().prefix + '100x100' + self.fqPhoto3().suffix + '">'
-		self.content6 = '<img src="' + self.fqPhoto4().prefix + '100x100' + self.fqPhoto4().suffix + '">'
-		self.content7 = '<img src="' + self.fqPhoto5().prefix + '100x100' + self.fqPhoto5().suffix + '"><br>'
-		self.content8 = '<center><img src="' + self.fqBestPhoto().prefix + '250x250' + self.fqBestPhoto().suffix + '"></center><br>'
+		self.content1 = '<center><h3 class="info-title">' + title + '</h3></center>';
+		self.content2 = '<b>Rating: </b>' + self.fqRating() + '<br>';
+		self.content3 = '<b>People here now: </b> ' + self.fqHereNow() + '<br><br>';
+		self.content4 = '<a href="https://foursquare.com/v/' + self.foursquare() + '"><img src="' + self.fqBestPhoto().prefix + '100x100' + self.fqBestPhoto().suffix + '">'
+		self.content5 = '<img src="' + self.fqPhoto2().prefix + '100x100' + self.fqPhoto2().suffix + '">'
+		self.content6 = '<img src="' + self.fqPhoto3().prefix + '100x100' + self.fqPhoto3().suffix + '">'
+		self.content7 = '<img src="' + self.fqPhoto4().prefix + '100x100' + self.fqPhoto4().suffix + '">'
+		self.content8 = '<img src="' + self.fqPhoto5().prefix + '100x100' + self.fqPhoto5().suffix + '"></a><br>'
 		self.content = self.content1 + self.content2 + self.content3 + self.content4 + self.content5 + self.content6 + self.content7 + self.content8
 		var latLng = self.marker.getPosition();
-		map.setCenter(latLng);
 		infowindow.setContent(self.content);
 		infowindow.open(map, self.marker);
+		map.setCenter(latLng);
 	}
 
 	google.maps.event.addListener(self.marker, 'click', function() {
