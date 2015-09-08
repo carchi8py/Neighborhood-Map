@@ -40,8 +40,10 @@ var Location = function(title, latitude, longitude, icon, type, foursquare) {
 		self.content5 = '<img src="' + self.fqPhoto3().prefix + '100x100' + self.fqPhoto3().suffix + '">'
 		self.content6 = '<img src="' + self.fqPhoto4().prefix + '100x100' + self.fqPhoto4().suffix + '">'
 		self.content7 = '<img src="' + self.fqPhoto5().prefix + '100x100' + self.fqPhoto5().suffix + '"><br>'
-		self.content8 = '<img src="' + self.fqBestPhoto().prefix + '400x400' + self.fqBestPhoto().suffix + '"><br>'
+		self.content8 = '<center><img src="' + self.fqBestPhoto().prefix + '250x250' + self.fqBestPhoto().suffix + '"></center><br>'
 		self.content = self.content1 + self.content2 + self.content3 + self.content4 + self.content5 + self.content6 + self.content7 + self.content8
+		var latLng = self.marker.getPosition();
+		map.setCenter(latLng);
 		infowindow.setContent(self.content);
 		infowindow.open(map, self.marker);
 	}
