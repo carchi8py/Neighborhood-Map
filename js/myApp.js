@@ -192,8 +192,20 @@ var ViewModel = function() {
 			location.fqRating(data.response.venue.rating);
 			location.fqHereNow(data.response.venue.hereNow.count);
 			location.fqBestPhoto(data.response.venue.bestPhoto);
-			location.fqOpenNow(data.response.venue.popular.status);
-			location.fqOpenWhen(data.response.venue.popular.timeframes);
+			//Some locations do not have a Status, so we'll put an empty string
+			try {
+				location.fqOpenNow(data.response.venue.popular.status);
+			}
+			catch(err) {
+				location.fqOpenNow('')
+			}
+			//Some locations do not have a time table, so we'll put an empty string
+			try {
+				location.fqOpenWhen(data.response.venue.popular.timeframes);
+			}
+			catch(err) {
+				location.fqOpenWhen('')
+			}
 		});
 	};
 };
