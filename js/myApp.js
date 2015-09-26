@@ -141,6 +141,7 @@ var ViewModel = function() {
 
 	self.openInfoWindow = function(obj) {
 		var location = self.getFoursquareVenue(obj);
+		obj.marker.setAnimation(google.maps.Animation.BOUNCE);
 		obj.infoWindow();
 	};
 
