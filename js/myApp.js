@@ -29,7 +29,8 @@ var Location = function(title, latitude, longitude, icon, type, foursquare) {
 	self.marker = new google.maps.Marker({
 		position: new google.maps.LatLng(self.latitude(), self.longitude()),
 		map: map,
-		icon: self.icon()
+		icon: self.icon(),
+		animation: google.maps.Animation.DROP
 	});
 
 	self.infoWindow = function() {
@@ -58,7 +59,8 @@ var Location = function(title, latitude, longitude, icon, type, foursquare) {
 		var latLng = self.marker.getPosition();
 		infowindow.setContent(self.content);
 		infowindow.open(map, self.marker);
-		map.setCenter(latLng);
+		map.panTo(latLng)
+		//map.setCenter(latLng);
 	};
 
 	google.maps.event.addListener(self.marker, 'click', function() {
@@ -147,6 +149,11 @@ var ViewModel = function() {
 
 	self.openInfoWindow = function(obj) {
 		var location = self.getFoursquareVenue(obj);
+		//Stop Animation if we click on something else
+		for(var x in parent.myLocations) {
+			var currentLoc = parent.myLocations[x];
+			currentLoc.marker.setAnimation(null);
+		}
 		obj.marker.setAnimation(google.maps.Animation.BOUNCE);
 		obj.infoWindow();
 	};
