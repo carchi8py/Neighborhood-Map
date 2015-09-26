@@ -35,27 +35,40 @@ var Location = function(title, latitude, longitude, icon, type, foursquare) {
 
 	self.infoWindow = function() {
 		self.content1 = '<center><h3 class="info-title">' + title + '</h3></center>';
-		self.content2 = '<b>Rating: </b>' + self.fqRating() + '<br>';
-		self.content3 = '<b>People here now: </b> ' + self.fqHereNow() + '<br><br>';
+		self.content2 = '<table><tr><td><b>Rating: </b>' + self.fqRating() + '</td>';
+		self.content3 = '<td><b>People here now: </b> ' + self.fqHereNow() + '</td></tr>';
 		self.timeinfo = '';
 		if (self.fqOpenWhen.length > 0)
 		{
+			var i = 0;
 			self.fqOpenWhen.forEach(function(item){
-				self.timeinfo = self.timeinfo + '<b>' + item.days + ': </b>';
-				item.open.forEach(function(openItem) {
-					self.timeinfo = self.timeinfo + openItem.renderedTime + ' ';
-				});
-				self.timeinfo = self.timeinfo + '<br>';
+				if (i == 0) {
+					self.timeinfo = self.timeinfo + '<tr><td><b>' + item.days + ': </b>';
+					item.open.forEach(function(openItem) {
+						self.timeinfo = self.timeinfo + openItem.renderedTime + ' ';
+					});
+					self.timeinfo = self.timeinfo + '</td>';
+				} else {
+					self.timeinfo = self.timeinfo + '<td><b>' + item.days + ': </b>';
+					item.open.forEach(function(openItem) {
+						self.timeinfo = self.timeinfo + openItem.renderedTime + ' ';
+					});
+					self.timeinfo = self.timeinfo + '</td>';
+				}
+				i = i+1;
+				if (i == 2) {
+					self.timeinfo = self.timeinfo + '</tr>';
+					i = 0;
+				}
 			});
 		} else {
-			self.timeinfo = "No Fourquare Opening time information<br>";
+			self.timeinfo = '<tr><td colspan="2">No Fourquare Opening time information<td></tr>';
 		}
 		self.content4 = '<a href="https://foursquare.com/v/' + self.foursquare() + '"><img src="' + self.fqBestPhoto().prefix + '100x100' + self.fqBestPhoto().suffix + '">';
 		self.content5 = '<img src="' + self.fqPhoto2().prefix + '100x100' + self.fqPhoto2().suffix + '">';
 		self.content6 = '<img src="' + self.fqPhoto3().prefix + '100x100' + self.fqPhoto3().suffix + '">';
-		self.content7 = '<img src="' + self.fqPhoto4().prefix + '100x100' + self.fqPhoto4().suffix + '">';
-		self.content8 = '<img src="' + self.fqPhoto5().prefix + '100x100' + self.fqPhoto5().suffix + '"></a><br>';
-		self.content = self.content1 + self.content2 + self.timeinfo + self.content3 + self.content4 + self.content5 + self.content6 + self.content7 + self.content8;
+		self.content7 = '<img src="' + self.fqPhoto4().prefix + '100x100' + self.fqPhoto4().suffix + '"></a><br>';
+		self.content = self.content1 + self.content2 + self.content3 + self.timeinfo + self.content4 + self.content5 + self.content6 + self.content7;
 		var latLng = self.marker.getPosition();
 		infowindow.setContent(self.content);
 		infowindow.open(map, self.marker);
@@ -273,7 +286,7 @@ var ViewModel = function() {
 
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
-		center: {lat: 36.110, lng: -115.172},
+		center: {lat: 36.110, lng: -115.179},
 		zoom: 15
 	});
 	infowindow = new google.maps.InfoWindow();
