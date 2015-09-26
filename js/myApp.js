@@ -3,6 +3,8 @@
 //The FQ variables in locations. The only way i was able to was to disable async
 $.ajaxSetup({'async': false});
 
+var map, infowindow;
+
 var Location = function(title, latitude, longitude, icon, type, foursquare) {
 	//To remeber the parent context
 	var self = this;
@@ -61,6 +63,10 @@ var Location = function(title, latitude, longitude, icon, type, foursquare) {
 
 	google.maps.event.addListener(self.marker, 'click', function() {
 		parent.viewModel.openInfoWindow(self);
+	});
+
+	google.maps.event.addListener(parent.infowindow, 'closeclick', function() {
+		parent.viewModel.closeInfoWindow(self);
 	});
 };
 
@@ -143,6 +149,10 @@ var ViewModel = function() {
 		var location = self.getFoursquareVenue(obj);
 		obj.marker.setAnimation(google.maps.Animation.BOUNCE);
 		obj.infoWindow();
+	};
+
+	self.closeInfoWindow = function(obj) {
+		obj.marker.setAnimation(null);
 	};
 
 	self.showLocationByType = function(type) {
@@ -253,7 +263,6 @@ var ViewModel = function() {
 	};
 };
 
-var map, infowindow;
 
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
